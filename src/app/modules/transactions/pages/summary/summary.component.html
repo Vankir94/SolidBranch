@@ -1,0 +1,36 @@
+<div class="card text-center">
+  <div class="card-header">
+    Summary
+  </div>
+  <div class="card-body">
+    <h5 class="card-title">Welcome</h5>
+    <div class="spinner-border text-primary" role="status" *ngIf="transactionsService.loader | async">
+      <span class="sr-only">Loading...</span>
+    </div>
+    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+    <button class="btn btn-primary mt-3">See transactions</button>
+  </div>
+  <div class="card-footer text-muted">
+    You have {{ (transactions | async).length }} transactions
+  </div>
+</div>
+
+<div class="container mt-2">
+  <div class="row cards">
+    <ng-container *ngFor="let keyvalue of (transactionGroups | async).entries()">
+      <ng-container
+        *ngTemplateOutlet="groupCard; context: { count: keyvalue[1].length, name: keyvalue[0] }"
+      ></ng-container>
+    </ng-container>
+  </div>
+</div>
+
+<ng-template #groupCard let-count="count" let-name="name">
+  <div class="card col">
+    <div class="card-body">
+      <h5 class="card-title">{{ count }}</h5>
+      <p class="card-text">{{ name }}</p>
+      <button (click)="transactionsService.goTo(name)" class="btn btn-primary mt-3">Go somewhere</button>
+    </div>
+  </div>
+</ng-template>
